@@ -152,16 +152,19 @@
 
         async function setupFirebase() {
             try {
-                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                const firebaseConfig = {
+  apiKey: "AIzaSyCJMsHkBBZVtjAWoX5MGtZ9ZvsxTAVejhs",
+  authDomain: "gaming-report-game.firebaseapp.com",
+  projectId: "gaming-report-game",
+  storageBucket: "gaming-report-game.firebasestorage.app",
+  messagingSenderId: "571449249083",
+  appId: "1:571449249083:web:29a4b3cd7c86dff0c4bb1e"
+};
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
                 setLogLevel('debug');
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
                 userId = auth.currentUser?.uid || `anon-${crypto.randomUUID()}`;
                 document.getElementById('userId').textContent = userId;
                 listenForLeaderboardUpdates();
