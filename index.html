@@ -1,424 +1,382 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #8cd3fe; -webkit-text-stroke: #8cd3fe}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6d7378; -webkit-text-stroke: #6d7378}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #71c083; -webkit-text-stroke: #71c083}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #a7c598; -webkit-text-stroke: #a7c598}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca; min-height: 16.0px}
-    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65; background-color: #171818}
-    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #36c0a0; -webkit-text-stroke: #36c0a0}
-    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc; background-color: #171818}
-    span.s1 {font-kerning: none; background-color: #171818}
-    span.s2 {font-kerning: none; color: #8cd3fe; background-color: #171818; -webkit-text-stroke: 0px #8cd3fe}
-    span.s3 {font-kerning: none; color: #6d6d6d; background-color: #171818; -webkit-text-stroke: 0px #6d6d6d}
-    span.s4 {font-kerning: none; color: #cacaca; background-color: #171818; -webkit-text-stroke: 0px #cacaca}
-    span.s5 {font-kerning: none; color: #c27e65; background-color: #171818; -webkit-text-stroke: 0px #c27e65}
-    span.s6 {font-kerning: none; color: #4689cc; background-color: #171818; -webkit-text-stroke: 0px #4689cc}
-    span.s7 {font-kerning: none; color: #d4d4d4; background-color: #171818; -webkit-text-stroke: 0px #d4d4d4}
-    span.s8 {font-kerning: none; color: #a7c598; background-color: #171818; -webkit-text-stroke: 0px #a7c598}
-    span.s9 {font-kerning: none; color: #cacaca; -webkit-text-stroke: 0px #cacaca}
-    span.s10 {font-kerning: none; color: #6d6d6d; -webkit-text-stroke: 0px #6d6d6d}
-    span.s11 {font-kerning: none; color: #4689cc; -webkit-text-stroke: 0px #4689cc}
-    span.s12 {font-kerning: none; color: #8cd3fe; -webkit-text-stroke: 0px #8cd3fe}
-    span.s13 {font-kerning: none}
-    span.s14 {font-kerning: none; color: #b76ff7; background-color: #171818; -webkit-text-stroke: 0px #b76ff7}
-    span.s15 {font-kerning: none; color: #71c083; background-color: #171818; -webkit-text-stroke: 0px #71c083}
-    span.s16 {font-kerning: none; color: #36c0a0; background-color: #171818; -webkit-text-stroke: 0px #36c0a0}
-    span.s17 {font-kerning: none; color: #f67c30; background-color: #171818; -webkit-text-stroke: 0px #f67c30}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captify Memory Match</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the 8-bit Tetris vibe */
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #1a103c;
+            color: #f0f0f0;
+            text-shadow: 2px 2px #000000;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            perspective: 1000px; /* For 3D flip effect */
+        }
+        .card {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Make cards square */
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        .card.flipped, .card.matched {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(0,0,0,0.5);
+            text-align: center;
+            padding: 0.5rem;
+            flex-direction: column;
+        }
+        .card-icon {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 0.5rem; 
+            line-height: 1;
+        }
+        .card-text {
+            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+            line-height: 1.2;
+        }
+        .card-front {
+            background: linear-gradient(45deg, #4c1d95, #8b5cf6);
+            border: 2px solid #a78bfa;
+            font-size: 3rem; /* Size for the '?' */
+        }
+        .card-front:hover {
+            background: linear-gradient(45deg, #5b21b6, #a78bfa);
+        }
+        .card-back {
+            background: linear-gradient(45deg, #1e40af, #3b82f6);
+            border: 2px solid #60a5fa;
+            transform: rotateY(180deg);
+        }
+        .card.matched .card-back {
+            background: linear-gradient(45deg, #166534, #22c55e);
+            border: 2px solid #4ade80;
+        }
+        .modal {
+            background-color: rgba(26, 16, 60, 0.9);
+            border: 4px solid #a78bfa;
+            box-shadow: 0 0 20px #8b5cf6;
+        }
+        .leaderboard-entry {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #4c1d95;
+        }
+        .leaderboard-company {
+            font-size: 0.65rem;
+            color: #a78bfa; /* A lighter purple */
+            display: block;
+            margin-top: 0.25rem;
+        }
+    </style>
 </head>
-<body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">html</span><span class="s4"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s5">"en"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s5">"UTF-8"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s4"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">title</span><span class="s3">&gt;</span><span class="s1">Captify Memory Match</span><span class="s3">&lt;/</span><span class="s6">title</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.tailwindcss.com"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"preconnect"</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.googleapis.com"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"preconnect"</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.gstatic.com"</span><span class="s4"> </span><span class="s2">crossorigin</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">link</span><span class="s4"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap"</span><span class="s4"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"stylesheet"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">/* Custom styles for the 8-bit Tetris vibe */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s6">body</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">font-family:</span><span class="s4"> </span><span class="s1">'Press Start 2P'</span><span class="s7">,</span><span class="s4"> </span><span class="s5">cursive</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background-color:</span><span class="s1"> #1a103c</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">color:</span><span class="s1"> #f0f0f0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">text-shadow:</span><span class="s1"> </span><span class="s8">2px</span><span class="s1"> </span><span class="s8">2px</span><span class="s1"> #000000</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.game-board</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">grid</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">grid-template-columns:</span><span class="s4"> </span><span class="s5">repeat(</span><span class="s8">4</span><span class="s7">,</span><span class="s4"> </span><span class="s8">1fr</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">gap:</span><span class="s1"> </span><span class="s8">1rem</span><span class="s7">;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">perspective:</span><span class="s4"> </span><span class="s8">1000px</span><span class="s7">;</span><span class="s4"> </span><span class="s1">/* For 3D flip effect */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s6">.card</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s8">100%</span><span class="s7">;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">aspect-ratio:</span><span class="s4"> </span><span class="s8">1</span><span class="s4"> </span><span class="s7">/</span><span class="s4"> </span><span class="s8">1</span><span class="s7">;</span><span class="s4"> </span><span class="s1">/* Make cards square */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">position:</span><span class="s1"> </span><span class="s5">relative</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">transform-style:</span><span class="s4"> </span><span class="s5">preserve-3d</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">transition:</span><span class="s1"> </span><span class="s5">transform</span><span class="s1"> </span><span class="s8">0.6s</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">cursor:</span><span class="s1"> </span><span class="s5">pointer</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card.flipped</span><span class="s7">,</span><span class="s4"> </span><span class="s1">.card.matched</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">transform:</span><span class="s1"> </span><span class="s5">rotateY(</span><span class="s8">180deg</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card-face</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">position:</span><span class="s1"> </span><span class="s5">absolute</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s8">100%</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">height:</span><span class="s1"> </span><span class="s8">100%</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">backface-visibility:</span><span class="s4"> </span><span class="s5">hidden</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">flex</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">align-items:</span><span class="s1"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">justify-content:</span><span class="s4"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">border-radius:</span><span class="s4"> </span><span class="s8">0.5rem</span><span class="s7">;</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">box-shadow:</span><span class="s4"> </span><span class="s1">0</span><span class="s4"> </span><span class="s1">4px</span><span class="s4"> </span><span class="s1">6px</span><span class="s4"> </span><span class="s5">rgba(</span><span class="s1">0</span><span class="s7">,</span><span class="s1">0</span><span class="s7">,</span><span class="s1">0</span><span class="s7">,</span><span class="s1">0.3</span><span class="s5">)</span><span class="s7">,</span><span class="s4"> </span><span class="s5">inset</span><span class="s4"> </span><span class="s1">0</span><span class="s4"> </span><span class="s1">0</span><span class="s4"> </span><span class="s1">0</span><span class="s4"> </span><span class="s1">2px</span><span class="s4"> </span><span class="s5">rgba(</span><span class="s1">0</span><span class="s7">,</span><span class="s1">0</span><span class="s7">,</span><span class="s1">0</span><span class="s7">,</span><span class="s1">0.5</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">text-align:</span><span class="s1"> </span><span class="s5">center</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">padding:</span><span class="s1"> </span><span class="s8">0.5rem</span><span class="s7">;</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">flex-direction:</span><span class="s4"> </span><span class="s5">column</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card-icon</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">font-size:</span><span class="s1"> </span><span class="s5">clamp(</span><span class="s8">1.5rem</span><span class="s7">,</span><span class="s1"> </span><span class="s8">5vw</span><span class="s7">,</span><span class="s1"> </span><span class="s8">2.5rem</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">margin-bottom:</span><span class="s1"> </span><span class="s8">0.5rem</span><span class="s7">;</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">line-height:</span><span class="s1"> </span><span class="s8">1</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card-text</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">font-size:</span><span class="s4"> </span><span class="s5">clamp(</span><span class="s1">0.6rem</span><span class="s7">,</span><span class="s4"> </span><span class="s1">2.5vw</span><span class="s7">,</span><span class="s4"> </span><span class="s1">0.75rem</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">line-height:</span><span class="s1"> </span><span class="s8">1.2</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card-front</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background:</span><span class="s1"> </span><span class="s5">linear-gradient(</span><span class="s8">45deg</span><span class="s7">,</span><span class="s1"> #4c1d95</span><span class="s7">,</span><span class="s1"> #8b5cf6</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">2px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #a78bfa</span><span class="s7">;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">font-size:</span><span class="s4"> </span><span class="s8">3rem</span><span class="s7">;</span><span class="s4"> </span><span class="s1">/* Size for the '?' */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card-front:hover</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background:</span><span class="s1"> </span><span class="s5">linear-gradient(</span><span class="s8">45deg</span><span class="s7">,</span><span class="s1"> #5b21b6</span><span class="s7">,</span><span class="s1"> #a78bfa</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card-back</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background:</span><span class="s1"> </span><span class="s5">linear-gradient(</span><span class="s8">45deg</span><span class="s7">,</span><span class="s1"> #1e40af</span><span class="s7">,</span><span class="s1"> #3b82f6</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">2px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #60a5fa</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">transform:</span><span class="s1"> </span><span class="s5">rotateY(</span><span class="s8">180deg</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.card.matched</span><span class="s4"> </span><span class="s1">.card-back</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">background:</span><span class="s1"> </span><span class="s5">linear-gradient(</span><span class="s8">45deg</span><span class="s7">,</span><span class="s1"> #166534</span><span class="s7">,</span><span class="s1"> #22c55e</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">2px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #4ade80</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s6">.modal</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">background-color:</span><span class="s4"> </span><span class="s5">rgba(</span><span class="s8">26</span><span class="s7">,</span><span class="s4"> </span><span class="s8">16</span><span class="s7">,</span><span class="s4"> </span><span class="s8">60</span><span class="s7">,</span><span class="s4"> </span><span class="s8">0.9</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">4px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #a78bfa</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">box-shadow:</span><span class="s1"> </span><span class="s8">0</span><span class="s1"> </span><span class="s8">0</span><span class="s1"> </span><span class="s8">20px</span><span class="s1"> #8b5cf6</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.leaderboard-entry</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p2"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s1">background-color:</span><span class="s4"> </span><span class="s5">rgba(</span><span class="s8">255</span><span class="s7">,</span><span class="s4"> </span><span class="s8">255</span><span class="s7">,</span><span class="s4"> </span><span class="s8">255</span><span class="s7">,</span><span class="s4"> </span><span class="s8">0.05</span><span class="s5">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s8">1px</span><span class="s1"> </span><span class="s5">solid</span><span class="s1"> #4c1d95</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">.leaderboard-company</span><span class="s4"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">font-size:</span><span class="s1"> </span><span class="s8">0.65rem</span><span class="s7">;</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s2">color:</span><span class="s4"> #a78bfa</span><span class="s7">;</span><span class="s4"> </span><span class="s1">/* A lighter purple */</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">block</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">margin-top:</span><span class="s1"> </span><span class="s8">0.25rem</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s3">&lt;</span><span class="s6">body</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"min-h-screen flex items-center justify-center p-4"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full max-w-4xl mx-auto"</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-center mb-4"</span><span class="s3">&gt;</span></p>
-<p class="p9"><span class="s9"><span class="Apple-converted-space">            </span></span><span class="s10">&lt;</span><span class="s11">img</span><span class="s9"> </span><span class="s12">src</span><span class="s10">=</span><span class="s13">"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAABkCAYAAABVf+kdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAACHdSURBVHhe7d15mB1V+sfxj2dmd2d3Z3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d' class="</span><span class="s12">mx-auto</span><span class="s9"> </span><span class="s12">h-16</span><span class="s9">"</span><span class="s10">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-sm text-gray-400 tracking-widest mt-2 mb-2"</span><span class="s3">&gt;</span><span class="s4">presents</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">h1</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-3xl md:text-5xl text-violet-300 mb-4"</span><span class="s3">&gt;</span><span class="s4">Memory Match</span><span class="s3">&lt;/</span><span class="s6">h1</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-center text-xs md:text-sm text-gray-300 mb-6 px-4"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>Can you be the quickest to match all the cards? There's £500 on the line, so you'd better get a move on...👀</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex justify-between items-center mb-6 p-4 bg-black bg-opacity-30 rounded-lg border-2 border-violet-500"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-lg"</span><span class="s3">&gt;</span><span class="s1">Time: </span><span class="s3">&lt;</span><span class="s6">span</span><span class="s1"> </span><span class="s2">id</span><span class="s3">=</span><span class="s5">"timer"</span><span class="s3">&gt;</span><span class="s1">0.0</span><span class="s3">&lt;/</span><span class="s6">span</span><span class="s3">&gt;</span><span class="s1">s</span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-lg"</span><span class="s3">&gt;</span><span class="s1">Pairs matched: </span><span class="s3">&lt;</span><span class="s6">span</span><span class="s1"> </span><span class="s2">id</span><span class="s3">=</span><span class="s5">"matches"</span><span class="s3">&gt;</span><span class="s1">0 / 8</span><span class="s3">&lt;/</span><span class="s6">span</span><span class="s3">&gt;&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex flex-col lg:flex-row gap-8"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"game-board"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"game-board flex-grow"</span><span class="s3">&gt;&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full lg:w-1/3 bg-black bg-opacity-30 p-4 rounded-lg border-2 border-violet-500"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-2xl text-center mb-4 text-violet-300"</span><span class="s3">&gt;</span><span class="s4">Leaderboard</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"leaderboard"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"space-y-2 text-sm"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"text-center text-gray-400"</span><span class="s3">&gt;</span><span class="s1">Loading scores...</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                 </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-4 text-xs text-center text-gray-400"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>Your User ID: </span><span class="s3">&lt;</span><span class="s6">br</span><span class="s3">&gt;&lt;</span><span class="s6">span</span><span class="s1"> </span><span class="s2">id</span><span class="s3">=</span><span class="s5">"userId"</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"break-all"</span><span class="s3">&gt;&lt;/</span><span class="s6">span</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"end-game-modal"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"modal p-8 rounded-lg text-center w-11/12 max-w-md"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">h2</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-3xl mb-4 text-yellow-300"</span><span class="s3">&gt;</span><span class="s4">You Won!</span><span class="s3">&lt;/</span><span class="s6">h2</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-lg mb-4"</span><span class="s3">&gt;</span><span class="s4">Your time: </span><span class="s3">&lt;</span><span class="s6">span</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"final-time"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"font-bold"</span><span class="s3">&gt;&lt;/</span><span class="s6">span</span><span class="s3">&gt;</span><span class="s4"> seconds</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"mb-4"</span><span class="s3">&gt;</span><span class="s1">Enter your details for the leaderboard:</span><span class="s3">&lt;/</span><span class="s6">p</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s5">"space-y-4"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">input</span><span class="s4"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"text"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"player-name"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center"</span><span class="s4"> </span><span class="s2">placeholder</span><span class="s3">=</span><span class="s1">"YOUR NAME"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">input</span><span class="s4"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"text"</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"player-company"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center"</span><span class="s4"> </span><span class="s2">placeholder</span><span class="s3">=</span><span class="s1">"YOUR COMPANY"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"flex flex-col sm:flex-row gap-4 mt-6"</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"submit-score"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg"</span><span class="s3">&gt;</span><span class="s4">Submit Score</span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s6">button</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"play-again"</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg"</span><span class="s3">&gt;</span><span class="s4">Play Again</span><span class="s3">&lt;/</span><span class="s6">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"module"</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s14">import</span><span class="s4"> </span><span class="s7">{</span><span class="s4"> initializeApp </span><span class="s7">}</span><span class="s4"> </span><span class="s14">from</span><span class="s4"> </span><span class="s1">"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">import</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> getAuth</span><span class="s7">,</span><span class="s1"> signInAnonymously</span><span class="s7">,</span><span class="s1"> signInWithCustomToken </span><span class="s7">}</span><span class="s1"> </span><span class="s14">from</span><span class="s1"> </span><span class="s15">"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">import</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> getFirestore</span><span class="s7">,</span><span class="s1"> collection</span><span class="s7">,</span><span class="s1"> addDoc</span><span class="s7">,</span><span class="s1"> onSnapshot</span><span class="s7">,</span><span class="s1"> setLogLevel </span><span class="s7">}</span><span class="s1"> </span><span class="s14">from</span><span class="s1"> </span><span class="s15">"https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"</span><span class="s7">;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> appId </span><span class="s7">=</span><span class="s1"> </span><span class="s14">typeof</span><span class="s1"> __app_id </span><span class="s7">!==</span><span class="s1"> </span><span class="s15">'undefined'</span><span class="s1"> </span><span class="s7">?</span><span class="s1"> __app_id </span><span class="s7">:</span><span class="s1"> </span><span class="s15">'default-card-match-app'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> db</span><span class="s7">,</span><span class="s1"> auth</span><span class="s7">,</span><span class="s1"> userId</span><span class="s7">;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">async</span><span class="s1"> </span><span class="s14">function</span><span class="s1"> setupFirebase</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">try</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> firebaseConfig </span><span class="s7">=</span><span class="s1"> </span><span class="s16">JSON</span><span class="s7">.</span><span class="s1">parse</span><span class="s7">(</span><span class="s14">typeof</span><span class="s1"> __firebase_config </span><span class="s7">!==</span><span class="s1"> </span><span class="s15">'undefined'</span><span class="s1"> </span><span class="s7">?</span><span class="s1"> __firebase_config </span><span class="s7">:</span><span class="s1"> </span><span class="s15">'{}'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> app </span><span class="s7">=</span><span class="s1"> initializeApp</span><span class="s7">(</span><span class="s1">firebaseConfig</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>db </span><span class="s7">=</span><span class="s1"> getFirestore</span><span class="s7">(</span><span class="s1">app</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>auth </span><span class="s7">=</span><span class="s1"> getAuth</span><span class="s7">(</span><span class="s1">app</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setLogLevel</span><span class="s7">(</span><span class="s15">'debug'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(</span><span class="s14">typeof</span><span class="s1"> __initial_auth_token </span><span class="s7">!==</span><span class="s1"> </span><span class="s15">'undefined'</span><span class="s1"> </span><span class="s7">&amp;&amp;</span><span class="s1"> __initial_auth_token</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s14">await</span><span class="s1"> signInWithCustomToken</span><span class="s7">(</span><span class="s1">auth</span><span class="s7">,</span><span class="s1"> __initial_auth_token</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span><span class="s1"> </span><span class="s14">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s14">await</span><span class="s1"> signInAnonymously</span><span class="s7">(</span><span class="s1">auth</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>userId </span><span class="s7">=</span><span class="s1"> auth</span><span class="s7">.</span><span class="s1">currentUser</span><span class="s7">?.</span><span class="s1">uid </span><span class="s7">||</span><span class="s1"> </span><span class="s15">`anon-</span><span class="s7">${</span><span class="s1">crypto</span><span class="s7">.</span><span class="s1">randomUUID</span><span class="s7">()}</span><span class="s15">`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'userId'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> userId</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>listenForLeaderboardUpdates</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s14">catch</span><span class="s1"> </span><span class="s7">(</span><span class="s1">error</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s15">"Firebase initialization failed:"</span><span class="s7">,</span><span class="s1"> error</span><span class="s7">);</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s4">getElementById</span><span class="s7">(</span><span class="s1">'leaderboard'</span><span class="s7">).</span><span class="s4">innerHTML </span><span class="s7">=</span><span class="s4"> </span><span class="s1">'&lt;p class="text-red-400"&gt;Could not connect to leaderboard.&lt;/p&gt;'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> gameBoard </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'game-board'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> timerEl </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'timer'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> matchesEl </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'matches'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> modal </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'end-game-modal'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> finalTimeEl </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'final-time'</span><span class="s7">);</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> cards </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> flippedCards </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> matchedPairs </span><span class="s7">=</span><span class="s1"> </span><span class="s17">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> lockBoard </span><span class="s7">=</span><span class="s1"> </span><span class="s14">false</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> timerInterval</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">let</span><span class="s1"> startTime</span><span class="s7">;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p10"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s4"> </span><span class="s1">CARD_CONTENT</span><span class="s4"> </span><span class="s7">=</span><span class="s4"> </span><span class="s7">[</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Gamer'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'🎮'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Sports Fan'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'⚽️'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Business Traveller'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'✈️'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Fashion Week'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'👗'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'World Cup'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'🏆'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Gambling'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'🎲'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Tech'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'💻'</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'Travel'</span><span class="s7">,</span><span class="s1"> icon</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'🌍'</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">];</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> matchSound </span><span class="s7">=</span><span class="s1"> </span><span class="s14">new</span><span class="s1"> </span><span class="s16">Tone</span><span class="s7">.</span><span class="s16">Synth</span><span class="s7">({</span><span class="s1"> oscillator</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> type</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'square'</span><span class="s1"> </span><span class="s7">},</span><span class="s1"> envelope</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> attack</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.01</span><span class="s7">,</span><span class="s1"> decay</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.1</span><span class="s7">,</span><span class="s1"> sustain</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.2</span><span class="s7">,</span><span class="s1"> release</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.1</span><span class="s1"> </span><span class="s7">}</span><span class="s1"> </span><span class="s7">}).</span><span class="s1">toDestination</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">const</span><span class="s1"> mismatchSound </span><span class="s7">=</span><span class="s1"> </span><span class="s14">new</span><span class="s1"> </span><span class="s16">Tone</span><span class="s7">.</span><span class="s16">MonoSynth</span><span class="s7">({</span><span class="s1"> oscillator</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> type</span><span class="s7">:</span><span class="s1"> </span><span class="s15">'sawtooth'</span><span class="s1"> </span><span class="s7">},</span><span class="s1"> envelope</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> attack</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.01</span><span class="s7">,</span><span class="s1"> decay</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.2</span><span class="s7">,</span><span class="s1"> sustain</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.1</span><span class="s7">,</span><span class="s1"> release</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.2</span><span class="s1"> </span><span class="s7">},</span><span class="s1"> filterEnvelope</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> attack</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.01</span><span class="s7">,</span><span class="s1"> decay</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.1</span><span class="s7">,</span><span class="s1"> sustain</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.05</span><span class="s7">,</span><span class="s1"> release</span><span class="s7">:</span><span class="s1"> </span><span class="s17">0.1</span><span class="s7">,</span><span class="s1"> baseFrequency</span><span class="s7">:</span><span class="s1"> </span><span class="s17">200</span><span class="s7">,</span><span class="s1"> octaves</span><span class="s7">:</span><span class="s1"> </span><span class="s17">4</span><span class="s1"> </span><span class="s7">}</span><span class="s1"> </span><span class="s7">}).</span><span class="s1">toDestination</span><span class="s7">();</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> playMatchSound</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s16">Tone</span><span class="s7">.</span><span class="s1">start</span><span class="s7">();</span><span class="s1"> matchSound</span><span class="s7">.</span><span class="s1">triggerAttackRelease</span><span class="s7">(</span><span class="s15">'C5'</span><span class="s7">,</span><span class="s1"> </span><span class="s15">'8n'</span><span class="s7">);</span><span class="s1"> setTimeout</span><span class="s7">(()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> matchSound</span><span class="s7">.</span><span class="s1">triggerAttackRelease</span><span class="s7">(</span><span class="s15">'G5'</span><span class="s7">,</span><span class="s1"> </span><span class="s15">'8n'</span><span class="s7">),</span><span class="s1"> </span><span class="s17">120</span><span class="s7">);</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> playMismatchSound</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s16">Tone</span><span class="s7">.</span><span class="s1">start</span><span class="s7">();</span><span class="s1"> mismatchSound</span><span class="s7">.</span><span class="s1">triggerAttackRelease</span><span class="s7">(</span><span class="s15">'G#2'</span><span class="s7">,</span><span class="s1"> </span><span class="s15">'8n'</span><span class="s7">);</span><span class="s1"> setTimeout</span><span class="s7">(()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> mismatchSound</span><span class="s7">.</span><span class="s1">triggerAttackRelease</span><span class="s7">(</span><span class="s15">'C2'</span><span class="s7">,</span><span class="s1"> </span><span class="s15">'8n'</span><span class="s7">),</span><span class="s1"> </span><span class="s17">120</span><span class="s7">);</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> shuffle</span><span class="s7">(</span><span class="s1">array</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">for</span><span class="s1"> </span><span class="s7">(</span><span class="s14">let</span><span class="s1"> i </span><span class="s7">=</span><span class="s1"> array</span><span class="s7">.</span><span class="s1">length </span><span class="s7">-</span><span class="s1"> </span><span class="s17">1</span><span class="s7">;</span><span class="s1"> i </span><span class="s7">&gt;</span><span class="s1"> </span><span class="s17">0</span><span class="s7">;</span><span class="s1"> i</span><span class="s7">--)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> j </span><span class="s7">=</span><span class="s1"> </span><span class="s16">Math</span><span class="s7">.</span><span class="s1">floor</span><span class="s7">(</span><span class="s16">Math</span><span class="s7">.</span><span class="s1">random</span><span class="s7">()</span><span class="s1"> </span><span class="s7">*</span><span class="s1"> </span><span class="s7">(</span><span class="s1">i </span><span class="s7">+</span><span class="s1"> </span><span class="s17">1</span><span class="s7">));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">[</span><span class="s1">array</span><span class="s7">[</span><span class="s1">i</span><span class="s7">],</span><span class="s1"> array</span><span class="s7">[</span><span class="s1">j</span><span class="s7">]]</span><span class="s1"> </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span><span class="s1">array</span><span class="s7">[</span><span class="s1">j</span><span class="s7">],</span><span class="s1"> array</span><span class="s7">[</span><span class="s1">i</span><span class="s7">]];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">return</span><span class="s1"> array</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> createGameBoard</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>gameBoard</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s15">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>matchedPairs </span><span class="s7">=</span><span class="s1"> </span><span class="s17">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>matchesEl</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s15">`0 / </span><span class="s7">${</span><span class="s16">CARD_CONTENT</span><span class="s7">.</span><span class="s1">length</span><span class="s7">}</span><span class="s15">`</span><span class="s7">;</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> cardValues </span><span class="s7">=</span><span class="s1"> shuffle</span><span class="s7">([...</span><span class="s16">CARD_CONTENT</span><span class="s7">,</span><span class="s1"> </span><span class="s7">...</span><span class="s16">CARD_CONTENT</span><span class="s7">]);</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cardValues</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">value </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> cardElement </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s15">'div'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>cardElement</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s15">'card'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>cardElement</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">value </span><span class="s7">=</span><span class="s1"> value</span><span class="s7">.</span><span class="s1">text</span><span class="s7">;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>cardElement</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s15">`</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="card-face card-front"&gt;?&lt;/div&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="card-face card-back"&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="card-icon"&gt;</span><span class="s7">${</span><span class="s4">value</span><span class="s7">.</span><span class="s4">icon</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="card-text"&gt;</span><span class="s7">${</span><span class="s4">value</span><span class="s7">.</span><span class="s4">text</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>cardElement</span><span class="s7">.</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s15">'click'</span><span class="s7">,</span><span class="s1"> handleCardClick</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>gameBoard</span><span class="s7">.</span><span class="s1">appendChild</span><span class="s7">(</span><span class="s1">cardElement</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>cards</span><span class="s7">.</span><span class="s1">push</span><span class="s7">(</span><span class="s1">cardElement</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> handleCardClick</span><span class="s7">(</span><span class="s1">e</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(!</span><span class="s1">startTime</span><span class="s7">)</span><span class="s1"> startTimer</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> clickedCard </span><span class="s7">=</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">currentTarget</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">lockBoard </span><span class="s7">||</span><span class="s1"> clickedCard</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">contains</span><span class="s7">(</span><span class="s15">'flipped'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> clickedCard</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">contains</span><span class="s7">(</span><span class="s15">'matched'</span><span class="s7">))</span><span class="s1"> </span><span class="s14">return</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>flipCard</span><span class="s7">(</span><span class="s1">clickedCard</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">flippedCards</span><span class="s7">.</span><span class="s1">length </span><span class="s7">===</span><span class="s1"> </span><span class="s17">2</span><span class="s7">)</span><span class="s1"> checkForMatch</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> flipCard</span><span class="s7">(</span><span class="s1">card</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>card</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s15">'flipped'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>flippedCards</span><span class="s7">.</span><span class="s1">push</span><span class="s7">(</span><span class="s1">card</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> checkForMatch</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lockBoard </span><span class="s7">=</span><span class="s1"> </span><span class="s14">true</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> </span><span class="s7">[</span><span class="s1">cardOne</span><span class="s7">,</span><span class="s1"> cardTwo</span><span class="s7">]</span><span class="s1"> </span><span class="s7">=</span><span class="s1"> flippedCards</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">cardOne</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">value </span><span class="s7">===</span><span class="s1"> cardTwo</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">value</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>playMatchSound</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout</span><span class="s7">(()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> disableCards</span><span class="s7">();</span><span class="s1"> checkWinCondition</span><span class="s7">();</span><span class="s1"> </span><span class="s7">},</span><span class="s1"> </span><span class="s17">500</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s14">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>playMismatchSound</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout</span><span class="s7">(</span><span class="s1">unflipCards</span><span class="s7">,</span><span class="s1"> </span><span class="s17">1000</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> disableCards</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>flippedCards</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">card </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>card</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s15">'flipped'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>card</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s15">'matched'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>matchedPairs</span><span class="s7">++;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>matchesEl</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s15">`</span><span class="s7">${</span><span class="s1">matchedPairs</span><span class="s7">}</span><span class="s15"> / </span><span class="s7">${</span><span class="s16">CARD_CONTENT</span><span class="s7">.</span><span class="s1">length</span><span class="s7">}</span><span class="s15">`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>resetBoardState</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> unflipCards</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>flippedCards</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">card </span><span class="s7">=&gt;</span><span class="s1"> card</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s15">'flipped'</span><span class="s7">));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>resetBoardState</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> resetBoardState</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>flippedCards </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>lockBoard </span><span class="s7">=</span><span class="s1"> </span><span class="s14">false</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> checkWinCondition</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">matchedPairs </span><span class="s7">===</span><span class="s1"> </span><span class="s16">CARD_CONTENT</span><span class="s7">.</span><span class="s1">length</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>stopTimer</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> timeTaken </span><span class="s7">=</span><span class="s1"> </span><span class="s7">((</span><span class="s16">Date</span><span class="s7">.</span><span class="s1">now</span><span class="s7">()</span><span class="s1"> </span><span class="s7">-</span><span class="s1"> startTime</span><span class="s7">)</span><span class="s1"> </span><span class="s7">/</span><span class="s1"> </span><span class="s17">1000</span><span class="s7">).</span><span class="s1">toFixed</span><span class="s7">(</span><span class="s17">2</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>finalTimeEl</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> timeTaken</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout</span><span class="s7">(()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s15">'hidden'</span><span class="s7">),</span><span class="s1"> </span><span class="s17">500</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> startTimer</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>startTime </span><span class="s7">=</span><span class="s1"> </span><span class="s16">Date</span><span class="s7">.</span><span class="s1">now</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>timerInterval </span><span class="s7">=</span><span class="s1"> setInterval</span><span class="s7">(()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>timerEl</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s7">((</span><span class="s16">Date</span><span class="s7">.</span><span class="s1">now</span><span class="s7">()</span><span class="s1"> </span><span class="s7">-</span><span class="s1"> startTime</span><span class="s7">)</span><span class="s1"> </span><span class="s7">/</span><span class="s1"> </span><span class="s17">1000</span><span class="s7">).</span><span class="s1">toFixed</span><span class="s7">(</span><span class="s17">1</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">},</span><span class="s1"> </span><span class="s17">100</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> stopTimer</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>clearInterval</span><span class="s7">(</span><span class="s1">timerInterval</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> resetGame</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>stopTimer</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>startTime </span><span class="s7">=</span><span class="s1"> </span><span class="s14">null</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>timerEl</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s15">'0.0'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s15">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'player-name'</span><span class="s7">).</span><span class="s1">value </span><span class="s7">=</span><span class="s1"> </span><span class="s15">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'player-company'</span><span class="s7">).</span><span class="s1">value </span><span class="s7">=</span><span class="s1"> </span><span class="s15">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'submit-score'</span><span class="s7">).</span><span class="s1">disabled </span><span class="s7">=</span><span class="s1"> </span><span class="s14">false</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'submit-score'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s15">'Submit Score'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>resetBoardState</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>createGameBoard</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">async</span><span class="s1"> </span><span class="s14">function</span><span class="s1"> addScoreToLeaderboard</span><span class="s7">(</span><span class="s1">name</span><span class="s7">,</span><span class="s1"> company</span><span class="s7">,</span><span class="s1"> time</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s4"> </span><span class="s7">(!</span><span class="s4">db</span><span class="s7">)</span><span class="s4"> </span><span class="s14">return</span><span class="s4"> console</span><span class="s7">.</span><span class="s4">error</span><span class="s7">(</span><span class="s1">"Firestore is not initialized."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">try</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> leaderboardCollection </span><span class="s7">=</span><span class="s1"> collection</span><span class="s7">(</span><span class="s1">db</span><span class="s7">,</span><span class="s1"> </span><span class="s15">`artifacts/</span><span class="s7">${</span><span class="s1">appId</span><span class="s7">}</span><span class="s15">/public/data/leaderboard`</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">await</span><span class="s1"> addDoc</span><span class="s7">(</span><span class="s1">leaderboardCollection</span><span class="s7">,</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> name</span><span class="s7">,</span><span class="s1"> company</span><span class="s7">,</span><span class="s1"> time</span><span class="s7">:</span><span class="s1"> parseFloat</span><span class="s7">(</span><span class="s1">time</span><span class="s7">),</span><span class="s1"> createdAt</span><span class="s7">:</span><span class="s1"> </span><span class="s14">new</span><span class="s1"> </span><span class="s16">Date</span><span class="s7">(),</span><span class="s1"> userId </span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s14">catch</span><span class="s1"> </span><span class="s7">(</span><span class="s1">error</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s15">"Error adding document: "</span><span class="s7">,</span><span class="s1"> error</span><span class="s7">);</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> listenForLeaderboardUpdates</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s4"> </span><span class="s7">(!</span><span class="s4">db</span><span class="s7">)</span><span class="s4"> </span><span class="s14">return</span><span class="s4"> console</span><span class="s7">.</span><span class="s4">error</span><span class="s7">(</span><span class="s1">"Firestore is not initialized."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> leaderboardCollection </span><span class="s7">=</span><span class="s1"> collection</span><span class="s7">(</span><span class="s1">db</span><span class="s7">,</span><span class="s1"> </span><span class="s15">`artifacts/</span><span class="s7">${</span><span class="s1">appId</span><span class="s7">}</span><span class="s15">/public/data/leaderboard`</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>onSnapshot</span><span class="s7">(</span><span class="s1">leaderboardCollection</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">snapshot</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p5"><span class="s4"><span class="Apple-converted-space">                </span></span><span class="s1">// --- FIX: Correctly call .data() and filter out entries without a valid time ---</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> scores </span><span class="s7">=</span><span class="s1"> snapshot</span><span class="s7">.</span><span class="s1">docs</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">doc </span><span class="s7">=&gt;</span><span class="s1"> doc</span><span class="s7">.</span><span class="s1">data</span><span class="s7">())</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">.</span><span class="s1">filter</span><span class="s7">(</span><span class="s1">score </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s14">typeof</span><span class="s1"> score</span><span class="s7">.</span><span class="s1">time </span><span class="s7">===</span><span class="s1"> </span><span class="s15">'number'</span><span class="s7">)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">.</span><span class="s1">sort</span><span class="s7">((</span><span class="s1">a</span><span class="s7">,</span><span class="s1"> b</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> a</span><span class="s7">.</span><span class="s1">time </span><span class="s7">-</span><span class="s1"> b</span><span class="s7">.</span><span class="s1">time</span><span class="s7">)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">.</span><span class="s1">slice</span><span class="s7">(</span><span class="s17">0</span><span class="s7">,</span><span class="s1"> </span><span class="s17">10</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>renderLeaderboard</span><span class="s7">(</span><span class="s1">scores</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">},</span><span class="s1"> </span><span class="s7">(</span><span class="s1">error</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s15">"Error listening to leaderboard:"</span><span class="s7">,</span><span class="s1"> error</span><span class="s7">);</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s4">getElementById</span><span class="s7">(</span><span class="s1">'leaderboard'</span><span class="s7">).</span><span class="s4">innerHTML </span><span class="s7">=</span><span class="s4"> </span><span class="s1">'&lt;p class="text-red-400"&gt;Error fetching scores.&lt;/p&gt;'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s14">function</span><span class="s1"> renderLeaderboard</span><span class="s7">(</span><span class="s1">scores</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> leaderboardEl </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'leaderboard'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>leaderboardEl</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s15">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">scores</span><span class="s7">.</span><span class="s1">length </span><span class="s7">===</span><span class="s1"> </span><span class="s17">0</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span>leaderboardEl</span><span class="s7">.</span><span class="s4">innerHTML </span><span class="s7">=</span><span class="s4"> </span><span class="s1">'&lt;p class="text-center text-gray-400"&gt;Be the first!&lt;/p&gt;'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">return</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>scores</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">((</span><span class="s1">score</span><span class="s7">,</span><span class="s1"> index</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> entry </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">createElement</span><span class="s7">(</span><span class="s15">'div'</span><span class="s7">);</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">                </span>entry</span><span class="s7">.</span><span class="s4">className </span><span class="s7">=</span><span class="s4"> </span><span class="s1">'leaderboard-entry flex justify-between p-2 rounded-md items-center'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">let</span><span class="s1"> medal </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span><span class="s15">'🥇'</span><span class="s7">,</span><span class="s1"> </span><span class="s15">'🥈'</span><span class="s7">,</span><span class="s1"> </span><span class="s15">'🥉'</span><span class="s7">][</span><span class="s1">index</span><span class="s7">]</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> </span><span class="s15">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s14">const</span><span class="s1"> companyHTML </span><span class="s7">=</span><span class="s1"> score</span><span class="s7">.</span><span class="s1">company </span><span class="s7">?</span><span class="s1"> </span><span class="s15">`&lt;span class="leaderboard-company"&gt;</span><span class="s7">${</span><span class="s1">score</span><span class="s7">.</span><span class="s1">company</span><span class="s7">}</span><span class="s15">&lt;/span&gt;`</span><span class="s1"> </span><span class="s7">:</span><span class="s1"> </span><span class="s15">''</span><span class="s7">;</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>entry</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s15">`</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;</span><span class="s7">${</span><span class="s4">index </span><span class="s7">+</span><span class="s4"> </span><span class="s17">1</span><span class="s7">}</span><span class="s1">. </span><span class="s7">${</span><span class="s4">medal</span><span class="s7">}</span><span class="s1"> </span><span class="s7">${</span><span class="s4">score</span><span class="s7">.</span><span class="s4">name</span><span class="s7">}</span><span class="s1">&lt;/span&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">${</span><span class="s4">companyHTML</span><span class="s7">}</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="font-bold text-lg"&gt;</span><span class="s7">${</span><span class="s4">score</span><span class="s7">.</span><span class="s4">time</span><span class="s7">.</span><span class="s4">toFixed</span><span class="s7">(</span><span class="s17">2</span><span class="s7">)}</span><span class="s1">s&lt;/span&gt;</span></p>
-<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>leaderboardEl</span><span class="s7">.</span><span class="s1">appendChild</span><span class="s7">(</span><span class="s1">entry</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'submit-score'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s15">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> playerName </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'player-name'</span><span class="s7">).</span><span class="s1">value</span><span class="s7">.</span><span class="s1">trim</span><span class="s7">()</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> </span><span class="s15">'PLAYER ONE'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s14">const</span><span class="s1"> playerCompany </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'player-company'</span><span class="s7">).</span><span class="s1">value</span><span class="s7">.</span><span class="s1">trim</span><span class="s7">()</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> </span><span class="s15">'UNKNOWN INC.'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>addScoreToLeaderboard</span><span class="s7">(</span><span class="s1">playerName</span><span class="s7">,</span><span class="s1"> playerCompany</span><span class="s7">,</span><span class="s1"> finalTimeEl</span><span class="s7">.</span><span class="s1">textContent</span><span class="s7">);</span></p>
-<p class="p8"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'submit-score'</span><span class="s7">).</span><span class="s1">disabled </span><span class="s7">=</span><span class="s1"> </span><span class="s14">true</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'submit-score'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s15">'Submitted!'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>setTimeout</span><span class="s7">(</span><span class="s1">resetGame</span><span class="s7">,</span><span class="s1"> </span><span class="s17">1500</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s15">'play-again'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s15">'click'</span><span class="s7">,</span><span class="s1"> resetGame</span><span class="s7">);</span></p>
-<p class="p8"><span class="s13"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>window</span><span class="s7">.</span><span class="s1">onload </span><span class="s7">=</span><span class="s1"> </span><span class="s7">()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>setupFirebase</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>createGameBoard</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">};</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p11"><span class="s10">&lt;/</span><span class="s13">html</span><span class="s10">&gt;</span></p>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl mx-auto">
+        
+        <div class="text-center mb-4">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAABkCAYAAABVf+kdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAACHdSURBVHhe7d15mB1V+sfxj2dmd2d3Z3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d' class="mx-auto h-16">
+            <p class="text-sm text-gray-400 tracking-widest mt-2 mb-2">presents</p>
+            <h1 class="text-3xl md:text-5xl text-violet-300 mb-4">Memory Match</h1>
+        </div>
+        
+        <p class="text-center text-xs md:text-sm text-gray-300 mb-6 px-4">
+            Can you be the quickest to match all the cards? There's £500 on the line, so you'd better get a move on...👀
+        </p>
+        
+        <div class="flex justify-between items-center mb-6 p-4 bg-black bg-opacity-30 rounded-lg border-2 border-violet-500">
+            <div class="text-lg">Time: <span id="timer">0.0</span>s</div>
+            <div class="text-lg">Pairs matched: <span id="matches">0 / 8</span></div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div id="game-board" class="game-board flex-grow"></div>
+
+            <div class="w-full lg:w-1/3 bg-black bg-opacity-30 p-4 rounded-lg border-2 border-violet-500">
+                <h2 class="text-2xl text-center mb-4 text-violet-300">Leaderboard</h2>
+                <div id="leaderboard" class="space-y-2 text-sm">
+                    <p class="text-center text-gray-400">Loading scores...</p>
+                </div>
+                 <div class="mt-4 text-xs text-center text-gray-400">
+                    Your User ID: <br><span id="userId" class="break-all"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="end-game-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
+        <div class="modal p-8 rounded-lg text-center w-11/12 max-w-md">
+            <h2 class="text-3xl mb-4 text-yellow-300">You Won!</h2>
+            <p class="text-lg mb-4">Your time: <span id="final-time" class="font-bold"></span> seconds</p>
+            <p class="mb-4">Enter your details for the leaderboard:</p>
+            
+            <div class="space-y-4">
+                <input type="text" id="player-name" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="YOUR NAME">
+                <input type="text" id="player-company" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="YOUR COMPANY">
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                <button id="submit-score" class="w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg">Submit Score</button>
+                <button id="play-again" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-card-match-app';
+        let db, auth, userId;
+
+        async function setupFirebase() {
+            try {
+                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                setLogLevel('debug');
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser?.uid || `anon-${crypto.randomUUID()}`;
+                document.getElementById('userId').textContent = userId;
+                listenForLeaderboardUpdates();
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                document.getElementById('leaderboard').innerHTML = '<p class="text-red-400">Could not connect to leaderboard.</p>';
+            }
+        }
+
+        const gameBoard = document.getElementById('game-board');
+        const timerEl = document.getElementById('timer');
+        const matchesEl = document.getElementById('matches');
+        const modal = document.getElementById('end-game-modal');
+        const finalTimeEl = document.getElementById('final-time');
+
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let lockBoard = false;
+        let timerInterval;
+        let startTime;
+        
+        const CARD_CONTENT = [
+            { text: 'Gamer', icon: '🎮' },
+            { text: 'Sports Fan', icon: '⚽️' },
+            { text: 'Business Traveller', icon: '✈️' },
+            { text: 'Fashion Week', icon: '👗' },
+            { text: 'World Cup', icon: '🏆' },
+            { text: 'Gambling', icon: '🎲' },
+            { text: 'Tech', icon: '💻' },
+            { text: 'Travel', icon: '🌍' }
+        ];
+
+        const matchSound = new Tone.Synth({ oscillator: { type: 'square' }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.1 } }).toDestination();
+        const mismatchSound = new Tone.MonoSynth({ oscillator: { type: 'sawtooth' }, envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.2 }, filterEnvelope: { attack: 0.01, decay: 0.1, sustain: 0.05, release: 0.1, baseFrequency: 200, octaves: 4 } }).toDestination();
+
+        function playMatchSound() { Tone.start(); matchSound.triggerAttackRelease('C5', '8n'); setTimeout(() => matchSound.triggerAttackRelease('G5', '8n'), 120); }
+        function playMismatchSound() { Tone.start(); mismatchSound.triggerAttackRelease('G#2', '8n'); setTimeout(() => mismatchSound.triggerAttackRelease('C2', '8n'), 120); }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createGameBoard() {
+            gameBoard.innerHTML = '';
+            matchedPairs = 0;
+            matchesEl.textContent = `0 / ${CARD_CONTENT.length}`;
+            
+            const cardValues = shuffle([...CARD_CONTENT, ...CARD_CONTENT]);
+            
+            cardValues.forEach(value => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.value = value.text;
+
+                cardElement.innerHTML = `
+                    <div class="card-face card-front">?</div>
+                    <div class="card-face card-back">
+                        <div class="card-icon">${value.icon}</div>
+                        <div class="card-text">${value.text}</div>
+                    </div>
+                `;
+
+                cardElement.addEventListener('click', handleCardClick);
+                gameBoard.appendChild(cardElement);
+                cards.push(cardElement);
+            });
+        }
+
+        function handleCardClick(e) {
+            if (!startTime) startTimer();
+            const clickedCard = e.currentTarget;
+            if (lockBoard || clickedCard.classList.contains('flipped') || clickedCard.classList.contains('matched')) return;
+            flipCard(clickedCard);
+            if (flippedCards.length === 2) checkForMatch();
+        }
+
+        function flipCard(card) {
+            card.classList.add('flipped');
+            flippedCards.push(card);
+        }
+
+        function checkForMatch() {
+            lockBoard = true;
+            const [cardOne, cardTwo] = flippedCards;
+            if (cardOne.dataset.value === cardTwo.dataset.value) {
+                playMatchSound();
+                setTimeout(() => { disableCards(); checkWinCondition(); }, 500);
+            } else {
+                playMismatchSound();
+                setTimeout(unflipCards, 1000);
+            }
+        }
+
+        function disableCards() {
+            flippedCards.forEach(card => {
+                card.classList.remove('flipped');
+                card.classList.add('matched');
+            });
+            matchedPairs++;
+            matchesEl.textContent = `${matchedPairs} / ${CARD_CONTENT.length}`;
+            resetBoardState();
+        }
+
+        function unflipCards() {
+            flippedCards.forEach(card => card.classList.remove('flipped'));
+            resetBoardState();
+        }
+
+        function resetBoardState() {
+            flippedCards = [];
+            lockBoard = false;
+        }
+
+        function checkWinCondition() {
+            if (matchedPairs === CARD_CONTENT.length) {
+                stopTimer();
+                const timeTaken = ((Date.now() - startTime) / 1000).toFixed(2);
+                finalTimeEl.textContent = timeTaken;
+                setTimeout(() => modal.classList.remove('hidden'), 500);
+            }
+        }
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                timerEl.textContent = ((Date.now() - startTime) / 1000).toFixed(1);
+            }, 100);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resetGame() {
+            stopTimer();
+            startTime = null;
+            timerEl.textContent = '0.0';
+            modal.classList.add('hidden');
+            document.getElementById('player-name').value = '';
+            document.getElementById('player-company').value = '';
+            document.getElementById('submit-score').disabled = false;
+            document.getElementById('submit-score').textContent = 'Submit Score';
+            resetBoardState();
+            createGameBoard();
+        }
+
+        async function addScoreToLeaderboard(name, company, time) {
+            if (!db) return console.error("Firestore is not initialized.");
+            try {
+                const leaderboardCollection = collection(db, `artifacts/${appId}/public/data/leaderboard`);
+                await addDoc(leaderboardCollection, { name, company, time: parseFloat(time), createdAt: new Date(), userId });
+            } catch (error) { console.error("Error adding document: ", error); }
+        }
+
+        function listenForLeaderboardUpdates() {
+            if (!db) return console.error("Firestore is not initialized.");
+            const leaderboardCollection = collection(db, `artifacts/${appId}/public/data/leaderboard`);
+            onSnapshot(leaderboardCollection, (snapshot) => {
+                // --- FIX: Correctly call .data() and filter out entries without a valid time ---
+                const scores = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(score => typeof score.time === 'number')
+                    .sort((a, b) => a.time - b.time)
+                    .slice(0, 10);
+                renderLeaderboard(scores);
+            }, (error) => {
+                console.error("Error listening to leaderboard:", error);
+                document.getElementById('leaderboard').innerHTML = '<p class="text-red-400">Error fetching scores.</p>';
+            });
+        }
+
+        function renderLeaderboard(scores) {
+            const leaderboardEl = document.getElementById('leaderboard');
+            leaderboardEl.innerHTML = '';
+            if (scores.length === 0) {
+                leaderboardEl.innerHTML = '<p class="text-center text-gray-400">Be the first!</p>';
+                return;
+            }
+            scores.forEach((score, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'leaderboard-entry flex justify-between p-2 rounded-md items-center';
+                let medal = ['🥇', '🥈', '🥉'][index] || '';
+                const companyHTML = score.company ? `<span class="leaderboard-company">${score.company}</span>` : '';
+
+                entry.innerHTML = `
+                    <div>
+                        <span>${index + 1}. ${medal} ${score.name}</span>
+                        ${companyHTML}
+                    </div>
+                    <span class="font-bold text-lg">${score.time.toFixed(2)}s</span>
+                `;
+                leaderboardEl.appendChild(entry);
+            });
+        }
+
+        document.getElementById('submit-score').addEventListener('click', () => {
+            const playerName = document.getElementById('player-name').value.trim() || 'PLAYER ONE';
+            const playerCompany = document.getElementById('player-company').value.trim() || 'UNKNOWN INC.';
+            addScoreToLeaderboard(playerName, playerCompany, finalTimeEl.textContent);
+            
+            document.getElementById('submit-score').disabled = true;
+            document.getElementById('submit-score').textContent = 'Submitted!';
+            setTimeout(resetGame, 1500);
+        });
+        document.getElementById('play-again').addEventListener('click', resetGame);
+
+        window.onload = () => {
+            setupFirebase();
+            createGameBoard();
+        };
+    </script>
 </body>
 </html>
