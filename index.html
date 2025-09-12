@@ -136,28 +136,36 @@
     
     <div id="end-game-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
         <div class="modal p-6 sm:p-8 rounded-lg text-center w-11/12 max-w-md">
-            <h2 class="text-3xl mb-4 text-yellow-300">You Won!</h2>
+            <!-- --- CHANGE: Gave heading an ID to be updated dynamically --- -->
+            <h2 id="modal-heading" class="text-3xl mb-4 text-yellow-300 leading-snug">Great Game!</h2>
             <p class="text-lg mb-4">Your time: <span id="final-time" class="font-bold"></span> seconds</p>
-            <p class="mb-4">Enter your details to join the leaderboard!</p>
             
-            <div class="space-y-3 text-left">
-                <input type="text" id="player-first-name" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="FIRST NAME" required>
-                <input type="text" id="player-last-name" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="LAST NAME" required>
-                <input type="text" id="player-company" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="COMPANY" required>
-                <input type="email" id="player-email" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="WORK EMAIL" required>
-                <select id="player-job-level" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" required>
-                    <option value="" disabled selected>SELECT JOB LEVEL</option>
-                    <option value="C-Suite">C-Suite</option>
-                    <option value="Senior">Senior</option>
-                    <option value="Mid-Level">Mid-Level</option>
-                    <option value="Junior">Junior</option>
-                </select>
+            <div id="form-view">
+                <p class="mb-4">Enter your details to join the leaderboard!</p>
+                <div class="space-y-3 text-left">
+                    <input type="text" id="player-first-name" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="FIRST NAME" required>
+                    <input type="text" id="player-last-name" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="LAST NAME" required>
+                    <input type="text" id="player-company" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="COMPANY" required>
+                    <input type="email" id="player-email" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" placeholder="WORK EMAIL" required>
+                    <select id="player-job-level" class="w-full p-2 rounded bg-violet-900 border-2 border-violet-400 text-white text-center" required>
+                        <option value="" disabled selected>SELECT JOB LEVEL</option>
+                        <option value="Coordinator">Coordinator</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Director">Director</option>
+                        <option value="VP">VP</option>
+                        <option value="C-Level">C-Level</option>
+                    </select>
+                </div>
+                <p id="form-error" class="text-red-400 text-sm mt-2 h-4"></p>
+                <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                    <button id="submit-score" class="w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg">Submit Score</button>
+                    <button id="play-again" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg">Play Again</button>
+                </div>
             </div>
-            <p id="form-error" class="text-red-400 text-sm mt-2 h-4"></p>
 
-            <div class="flex flex-col sm:flex-row gap-4 mt-4">
-                <button id="submit-score" class="w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg">Submit Score</button>
-                <button id="play-again" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg">Play Again</button>
+            <div id="confirmation-view" class="hidden">
+                <p class="text-lg my-4 text-green-300">Thanks! Your results will be uploaded automatically from now on.</p>
+                <button id="play-again-confirmation" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg mt-4">Play Again</button>
             </div>
         </div>
     </div>
@@ -165,36 +173,32 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // --- CHANGE: Imported getDocs for fetching all scores ---
+        import { getFirestore, collection, addDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- IMPORTANT: Paste your Firebase config object here ---
-        // You can get this from: Project settings > General > Your apps > SDK setup and configuration
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+          apiKey: "AIzaSyCJMsHkBBZVtjAWoX5MGtZ9ZvsxTAVejhs",
+          authDomain: "gaming-report-game.firebaseapp.com",
+          projectId: "gaming-report-game",
+          storageBucket: "gaming-report-game.appspot.com",
+          messagingSenderId: "571449249083",
+          appId: "1:571449249083:web:29a4b3cd7c86dff0c4bb1e"
         };
         
         let db, auth, userId;
 
         function initializeGame() {
-            // --- FIX: Check for placeholder API key before initializing Firebase ---
-            if (firebaseConfig.apiKey === "YOUR_API_KEY") {
-                console.error("Firebase config is not set. Please paste your firebaseConfig object into the index.html file.");
-                document.getElementById('leaderboard').innerHTML = '<p class="text-red-400 text-sm leading-tight">SETUP NEEDED:<br>Firebase keys are missing in the code. Please add them to continue.</p>';
-                document.getElementById('game-board').innerHTML = '<p class="text-center text-yellow-300 col-span-4">Game disabled until Firebase is configured.</p>'
-                return; // Stop execution if keys are missing
+            if (firebaseConfig.apiKey.startsWith("YOUR_API")) {
+                console.error("Firebase config is not set.");
+                document.getElementById('leaderboard').innerHTML = '<p class="text-red-400 text-sm leading-tight">SETUP NEEDED:<br>Firebase keys missing.</p>';
+                document.getElementById('game-board').innerHTML = '<p class="text-center text-yellow-300 col-span-4">Game disabled.</p>'
+                return; 
             }
-
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
             setupFirebase();
         }
-
 
         async function setupFirebase() {
             try {
@@ -204,7 +208,7 @@
                 listenForLeaderboardUpdates();
             } catch (error) {
                 console.error("Firebase initialization failed:", error);
-                document.getElementById('leaderboard').innerHTML = '<p class="text-red-400">Could not connect to leaderboard. Check API key and authorized domains in Firebase.</p>';
+                document.getElementById('leaderboard').innerHTML = '<p class="text-red-400">Connection error.</p>';
             }
         }
 
@@ -213,8 +217,10 @@
         const matchesEl = document.getElementById('matches');
         const modal = document.getElementById('end-game-modal');
         const finalTimeEl = document.getElementById('final-time');
+        const formView = document.getElementById('form-view');
+        const confirmationView = document.getElementById('confirmation-view');
+        const modalHeading = document.getElementById('modal-heading');
 
-        let cards = [];
         let flippedCards = [];
         let matchedPairs = 0;
         let lockBoard = false;
@@ -222,14 +228,10 @@
         let startTime;
         
         const CARD_CONTENT = [
-            { text: 'Gamer', icon: '🎮' },
-            { text: 'Sports Fan', icon: '⚽️' },
-            { text: 'Business Traveller', icon: '✈️' },
-            { text: 'Fashion Week', icon: '👗' },
-            { text: 'World Cup', icon: '🏆' },
-            { text: 'Gambling', icon: '🎲' },
-            { text: 'Tech', icon: '💻' },
-            { text: 'Travel', icon: '🌍' }
+            { text: 'Gamer', icon: '🎮' }, { text: 'Sports Fan', icon: '⚽️' },
+            { text: 'Business Traveller', icon: '✈️' }, { text: 'Fashion Week', icon: '👗' },
+            { text: 'World Cup', icon: '🏆' }, { text: 'Gambling', icon: '🎲' },
+            { text: 'Tech', icon: '💻' }, { text: 'Travel', icon: '🌍' }
         ];
 
         const matchSound = new Tone.Synth({ oscillator: { type: 'square' }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.1 } }).toDestination();
@@ -239,10 +241,7 @@
         function playMismatchSound() { Tone.start(); mismatchSound.triggerAttackRelease('G#2', '8n'); setTimeout(() => mismatchSound.triggerAttackRelease('C2', '8n'), 120); }
 
         function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
+            for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; }
             return array;
         }
 
@@ -250,20 +249,14 @@
             gameBoard.innerHTML = '';
             matchedPairs = 0;
             matchesEl.textContent = `0 / ${CARD_CONTENT.length}`;
-            
             const cardValues = shuffle([...CARD_CONTENT, ...CARD_CONTENT]);
-            
             cardValues.forEach(value => {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card');
                 cardElement.dataset.value = value.text;
                 cardElement.innerHTML = `
                     <div class="card-face card-front">?</div>
-                    <div class="card-face card-back">
-                        <div class="card-icon">${value.icon}</div>
-                        <div class="card-text">${value.text}</div>
-                    </div>
-                `;
+                    <div class="card-face card-back"><div class="card-icon">${value.icon}</div><div class="card-text">${value.text}</div></div>`;
                 cardElement.addEventListener('click', handleCardClick);
                 gameBoard.appendChild(cardElement);
             });
@@ -277,10 +270,7 @@
             if (flippedCards.length === 2) checkForMatch();
         }
 
-        function flipCard(card) {
-            card.classList.add('flipped');
-            flippedCards.push(card);
-        }
+        function flipCard(card) { card.classList.add('flipped'); flippedCards.push(card); }
 
         function checkForMatch() {
             lockBoard = true;
@@ -295,7 +285,7 @@
         }
 
         function disableCards() {
-            flippedCards.forEach(card => card.classList.remove('flipped', 'matched'));
+            flippedCards.forEach(card => card.classList.remove('flipped'));
             flippedCards[0].classList.add('matched');
             flippedCards[1].classList.add('matched');
             matchedPairs++;
@@ -303,29 +293,30 @@
             resetBoardState();
         }
 
-        function unflipCards() {
-            flippedCards.forEach(card => card.classList.remove('flipped'));
-            resetBoardState();
-        }
-
-        function resetBoardState() {
-            flippedCards = [];
-            lockBoard = false;
-        }
-
-        function checkWinCondition() {
+        function unflipCards() { flippedCards.forEach(card => card.classList.remove('flipped')); resetBoardState(); }
+        function resetBoardState() { flippedCards = []; lockBoard = false; }
+        
+        // --- CHANGE: Entire win condition logic is now async to handle rank calculation ---
+        async function checkWinCondition() {
             if (matchedPairs === CARD_CONTENT.length) {
                 stopTimer();
-                const timeTaken = ((Date.now() - startTime) / 1000).toFixed(2);
-                finalTimeEl.textContent = timeTaken;
+                const timeTaken = parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
+                finalTimeEl.textContent = timeTaken.toFixed(2);
+
+                const rank = await getLeaderboardRank(timeTaken);
+                const rankSuffix = getRankSuffix(rank);
+                
+                if (rank === 1) {
+                    modalHeading.innerHTML = `New High Score!<br>You're in 1st Place!`;
+                } else {
+                    modalHeading.textContent = `Not bad! You came ${rank}${rankSuffix}.`;
+                }
 
                 const savedDetails = localStorage.getItem('captifyPlayerDetails');
                 if (savedDetails) {
                     const playerData = JSON.parse(savedDetails);
-                    addScoreToLeaderboard(playerData.firstName, playerData.lastName, playerData.company, playerData.email, playerData.jobLevel, timeTaken);
-                    const submitButton = document.getElementById('submit-score');
-                    submitButton.textContent = 'Submitted!';
-                    setTimeout(resetGame, 1500);
+                    addScoreToLeaderboard(playerData, timeTaken);
+                    setTimeout(resetGame, 500);
                 } else {
                     setTimeout(() => modal.classList.remove('hidden'), 500);
                 }
@@ -346,22 +337,52 @@
             document.getElementById('player-email').value = '';
             document.getElementById('player-job-level').value = '';
             document.getElementById('form-error').textContent = '';
-            document.getElementById('submit-score').disabled = false;
-            document.getElementById('submit-score').textContent = 'Submit Score';
+            formView.classList.remove('hidden');
+            confirmationView.classList.add('hidden');
             resetBoardState();
             createGameBoard();
         }
 
-        async function addScoreToLeaderboard(firstName, lastName, company, email, jobLevel, time) {
-            if (!db) { console.error("Firestore is not initialized."); return; }
+        async function addScoreToLeaderboard(playerData, time) {
+            if (!db) return;
+            const { firstName, lastName, company, email, jobLevel } = playerData;
             try {
                 const leaderboardCollection = collection(db, `leaderboard`);
-                await addDoc(leaderboardCollection, { firstName, lastName, company, email, jobLevel, time: parseFloat(time), createdAt: new Date(), userId });
+                await addDoc(leaderboardCollection, { firstName, lastName, company, email, jobLevel, time, createdAt: new Date(), userId });
             } catch (error) { console.error("Error adding document: ", error); }
         }
 
+        // --- CHANGE: New function to calculate player's rank ---
+        async function getLeaderboardRank(playerTime) {
+            if (!db) return 999; // Return a high number if DB isn't connected
+            const leaderboardCollection = collection(db, 'leaderboard');
+            try {
+                const snapshot = await getDocs(leaderboardCollection);
+                const scores = snapshot.docs.map(doc => doc.data().time).filter(time => typeof time === 'number');
+                scores.push(playerTime);
+                scores.sort((a, b) => a - b);
+                const rank = scores.indexOf(playerTime) + 1;
+                return rank;
+            } catch (error) {
+                console.error("Could not fetch leaderboard for ranking:", error);
+                return 0; // Return 0 to indicate an error
+            }
+        }
+
+        // --- CHANGE: New helper function for rank suffix (1st, 2nd, 3rd...) ---
+        function getRankSuffix(rank) {
+            if (rank === 0) return ''; // No suffix if there was an error
+            if (rank % 100 >= 11 && rank % 100 <= 13) return 'th';
+            switch (rank % 10) {
+                case 1: return 'st';
+                case 2: return 'nd';
+                case 3: return 'rd';
+                default: return 'th';
+            }
+        }
+
         function listenForLeaderboardUpdates() {
-            if (!db) { return; }
+            if (!db) return;
             const leaderboardCollection = collection(db, `leaderboard`);
             onSnapshot(leaderboardCollection, (snapshot) => {
                 const scores = snapshot.docs
@@ -376,23 +397,13 @@
         function renderLeaderboard(scores) {
             const leaderboardEl = document.getElementById('leaderboard');
             leaderboardEl.innerHTML = '';
-            if (scores.length === 0) {
-                leaderboardEl.innerHTML = '<p class="text-center text-gray-400">Be the first!</p>';
-                return;
-            }
+            if (scores.length === 0) { leaderboardEl.innerHTML = '<p class="text-center text-gray-400">Be the first!</p>'; return; }
             scores.forEach((score, index) => {
                 const entry = document.createElement('div');
                 entry.className = 'leaderboard-entry flex justify-between p-2 rounded-md items-center';
                 let medal = ['🥇', '🥈', '🥉'][index] || '';
                 const companyHTML = score.company ? `<span class="leaderboard-company">${score.company}</span>` : '';
-
-                entry.innerHTML = `
-                    <div>
-                        <span>${index + 1}. ${medal} ${score.firstName}</span>
-                        ${companyHTML}
-                    </div>
-                    <span class="font-bold text-lg">${score.time.toFixed(2)}s</span>
-                `;
+                entry.innerHTML = `<div><span>${index + 1}. ${medal} ${score.firstName}</span>${companyHTML}</div><span class="font-bold text-lg">${score.time.toFixed(2)}s</span>`;
                 leaderboardEl.appendChild(entry);
             });
         }
@@ -406,24 +417,21 @@
             const errorEl = document.getElementById('form-error');
 
             if (!firstName || !lastName || !company || !email || !jobLevel) {
-                errorEl.textContent = 'Please fill out all fields.';
-                return;
+                errorEl.textContent = 'Please fill out all fields.'; return;
             }
             errorEl.textContent = '';
             
-            const time = finalTimeEl.textContent;
-            addScoreToLeaderboard(firstName, lastName, company, email, jobLevel, time);
-
+            const time = parseFloat(finalTimeEl.textContent);
             const playerData = { firstName, lastName, company, email, jobLevel };
+            addScoreToLeaderboard(playerData, time);
             localStorage.setItem('captifyPlayerDetails', JSON.stringify(playerData));
             
-            const submitButton = document.getElementById('submit-score');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitted!';
-            setTimeout(resetGame, 1500);
+            formView.classList.add('hidden');
+            confirmationView.classList.remove('hidden');
         });
 
         document.getElementById('play-again').addEventListener('click', resetGame);
+        document.getElementById('play-again-confirmation').addEventListener('click', resetGame);
 
         window.onload = () => {
             initializeGame();
@@ -432,4 +440,3 @@
     </script>
 </body>
 </html>
-
