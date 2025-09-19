@@ -97,30 +97,31 @@
             background-position: right 0.7rem top 50%;
             background-size: 0.65rem auto;
         }
-        .wide-title {
-            display: inline-block;
-            transform: scaleX(1.2);
-            transform-origin: center;
-            letter-spacing: 0.1em;
-        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-2 sm:p-4">
     <div class="w-full max-w-4xl mx-auto">
         
         <div class="text-center mb-4">
-            <img src="https://raw.githubusercontent.com/samuelotterspoor-captify/Gaming-Report-Game/main/captify_logo_white.svg" alt="Captify Logo" class="mx-auto h-10 sm:h-12">
+            <img src="https://raw.githubusercontent.com/samuelotterspoor-captify/Gaming-Report-Game/main/captify_logo_white.svg" alt="Captify Logo" class="mx-auto h-12 sm:h-16">
             <p class="text-sm text-gray-400 tracking-widest mt-2 mb-2">presents</p>
-            <h1 class="text-2xl sm:text-3xl md:text-5xl text-violet-300 mb-4"><span class="wide-title">Memory Match</span></h1>
+            <h1 class="text-2xl sm:text-3xl md:text-5xl text-violet-300 mb-4">Memory Match</h1>
         </div>
         
-        <p class="text-center text-xs md:text-sm text-gray-300 mb-6 px-4">
-            Uncover and match all pairs of Captify audiences as quickly as you can. Fastest time wins a XXXXXX!
+        <!-- --- CHANGE: Subheader text has been updated --- -->
+        <p class="text-center text-xs md:text-sm text-gray-300 mb-6 px-4 leading-relaxed">
+            Uncover and match all pairs of Captify audiences as quickly as you can. Fastest time wins a £250 Boom Battle Bar voucher!
         </p>
         
-        <div class="flex justify-around items-center text-center mb-6 p-3 sm:p-4 bg-black bg-opacity-30 rounded-lg border-2 border-violet-500 text-sm sm:text-lg">
-            <div>Time:<br><span id="timer" class="text-xl sm:text-2xl">0.0s</span></div>
-            <div>Pairs matched:<br><span id="matches" class="text-xl sm:text-2xl">0 / 8</span></div>
+        <div class="flex flex-col sm:flex-row justify-between items-center text-center mb-6 p-3 sm:p-4 bg-black bg-opacity-30 rounded-lg border-2 border-violet-500 text-base sm:text-lg">
+            <div class="w-1/2 sm:w-auto">
+                <span class="block text-xs sm:inline">Time:</span> 
+                <span id="timer">0.0s</span>
+            </div>
+            <div class="w-1/2 sm:w-auto">
+                <span class="block text-xs sm:inline">Pairs matched:</span> 
+                <span id="matches">0 / 8</span>
+            </div>
         </div>
 
         <div class="flex flex-col lg:flex-row gap-8">
@@ -302,15 +303,17 @@
             if (matchedPairs === CARD_CONTENT.length) {
                 stopTimer();
                 const timeTaken = parseFloat(((Date.now() - startTime) / 1000).toFixed(2));
-                document.getElementById('final-time').textContent = timeTaken.toFixed(2);
+                finalTimeEl.textContent = timeTaken.toFixed(2);
 
                 const rank = await getLeaderboardRank(timeTaken);
                 const rankSuffix = getRankSuffix(rank);
                 
                 if (rank === 1) {
                     modalHeading.innerHTML = `New High Score!<br>You're in 1st Place!`;
-                } else {
+                } else if (rank > 0) {
                     modalHeading.textContent = `Not bad! You came ${rank}${rankSuffix}.`;
+                } else {
+                    modalHeading.textContent = 'Great Game!';
                 }
 
                 const savedDetails = localStorage.getItem('captifyPlayerDetails');
@@ -324,13 +327,13 @@
             }
         }
         
-        function startTimer() { startTime = Date.now(); timerInterval = setInterval(() => { timerEl.textContent = ((Date.now() - startTime) / 1000).toFixed(1) + 's'; }, 100); }
+        function startTimer() { startTime = Date.now(); timerInterval = setInterval(() => { timerEl.textContent = ((Date.now() - startTime) / 1000).toFixed(1); }, 100); }
         function stopTimer() { clearInterval(timerInterval); }
         
         function resetGame() {
             stopTimer();
             startTime = null;
-            document.getElementById('timer').textContent = '0.0s';
+            timerEl.textContent = '0.0s';
             modal.classList.add('hidden');
             document.getElementById('player-first-name').value = '';
             document.getElementById('player-last-name').value = '';
@@ -348,15 +351,13 @@
             if (!db) return;
             const { firstName, lastName, company, email, jobLevel } = playerData;
             try {
-                // --- FIX: Updated collection path ---
                 const leaderboardCollection = collection(db, `leaderboard-scores`);
                 await addDoc(leaderboardCollection, { firstName, lastName, company, email, jobLevel, time, createdAt: new Date(), userId });
             } catch (error) { console.error("Error adding document: ", error); }
         }
 
         async function getLeaderboardRank(playerTime) {
-            if (!db) return 999;
-            // --- FIX: Updated collection path ---
+            if (!db) return 0;
             const leaderboardCollection = collection(db, 'leaderboard-scores');
             try {
                 const snapshot = await getDocs(leaderboardCollection);
@@ -384,7 +385,6 @@
 
         function listenForLeaderboardUpdates() {
             if (!db) return;
-            // --- FIX: Updated collection path ---
             const leaderboardCollection = collection(db, `leaderboard-scores`);
             onSnapshot(leaderboardCollection, (snapshot) => {
                 const scores = snapshot.docs
@@ -393,13 +393,7 @@
                     .sort((a, b) => a.time - b.time)
                     .slice(0, 10);
                 renderLeaderboard(scores);
-            }, (error) => {
-                console.error("Error listening to leaderboard:", error);
-                // --- FIX: Added specific error message for permission issues ---
-                if (error.code === 'permission-denied') {
-                    document.getElementById('leaderboard').innerHTML = '<p class="text-red-400 text-sm leading-tight">PERMISSION ERROR:<br>Please update your Firebase Security Rules to allow reads on the leaderboard.</p>';
-                }
-            });
+            }, (error) => console.error("Error listening to leaderboard:", error));
         }
 
         function renderLeaderboard(scores) {
@@ -429,7 +423,7 @@
             }
             errorEl.textContent = '';
             
-            const time = parseFloat(document.getElementById('final-time').textContent);
+            const time = parseFloat(finalTimeEl.textContent);
             const playerData = { firstName, lastName, company, email, jobLevel };
             addScoreToLeaderboard(playerData, time);
             localStorage.setItem('captifyPlayerDetails', JSON.stringify(playerData));
