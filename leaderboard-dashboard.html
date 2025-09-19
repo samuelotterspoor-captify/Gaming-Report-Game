@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captify Memory Match - Leaderboard Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #1a103c;
+            color: #f0f0f0;
+            text-shadow: 2px 2px #000000;
+        }
+        .dashboard-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 4px solid #4c1d95;
+            box-shadow: 0 0 25px rgba(76, 29, 149, 0.7);
+            max-height: 80vh; /* Ensure it fits on screen */
+            overflow-y: auto; /* Add scroll if content exceeds height */
+        }
+        .leaderboard-entry {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-bottom: 2px solid #4c1d95;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .leaderboard-entry:last-child {
+            border-bottom: none;
+        }
+        .leaderboard-entry:nth-child(1) { border-left: 4px solid #FFD700; } /* Gold */
+        .leaderboard-entry:nth-child(2) { border-left: 4px solid #C0C0C0; } /* Silver */
+        .leaderboard-entry:nth-child(3) { border-left: 4px solid #CD7F32; } /* Bronze */
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    
+    <div class="text-center w-full max-w-4xl mb-6">
+        <img src="https://raw.githubusercontent.com/samuelotterspoor-captify/Gaming-Report-Game/main/captify_logo_white.svg" alt="Captify Logo" class="mx-auto h-16">
+        <p class="text-sm text-gray-400 tracking-widest mt-2 mb-2">presents</p>
+        <h1 class="text-5xl text-violet-300 mb-4">Memory Match Leaderboard</h1>
+        <p class="text-center text-sm text-gray-300 mt-4 leading-relaxed">
+            Uncover and match all pairs of Captify audiences as quickly as you can. Fastest time wins a £250 Boom Battle Bar voucher!
+        </p>
+    </div>
+
+    <div class="w-full max-w-4xl dashboard-container p-6 rounded-2xl">
+        <div id="leaderboard-display" class="space-y-3 text-lg">
+            <p class="text-center text-gray-400 py-8">Connecting to the live feed...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- IMPORTANT: Paste your Firebase config object here ---
+        // This MUST be the same config object as in your game file.
+        const firebaseConfig = {
+          apiKey: "AIzaSyCJMsHkBBZVtjAWoX5MGtZ9ZvsxTAVejhs",
+          authDomain: "gaming-report-game.firebaseapp.com",
+          projectId: "gaming-report-game",
+          storageBucket: "gaming-report-game.appspot.com",
+          messagingSenderId: "571449249083",
+          appId: "1:571449249083:web:29a4b3cd7c86dff0c4bb1e"
+        };
+        
+        // --- No need to edit below this line ---
+
+        let db;
+
+        function initializeAppAndData() {
+            if (firebaseConfig.apiKey.startsWith("YOUR_API")) {
+                document.getElementById('leaderboard-display').innerHTML = '<p class="text-red-400 text-center">SETUP NEEDED: Please paste your Firebase config keys into the HTML file.</p>';
+                return;
+            }
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            listenForLeaderboardUpdates();
+        }
+
+        function listenForLeaderboardUpdates() {
+            if (!db) return;
+            // --- CHANGE: The collection name is now 'leaderboard-scores' ---
+            const leaderboardCollection = collection(db, 'leaderboard-scores');
+            onSnapshot(leaderboardCollection, (snapshot) => {
+                const scores = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(score => typeof score.time === 'number' && score.firstName)
+                    .sort((a, b) => a.time - b.time)
+                    .slice(0, 20); // --- CHANGE: Now displays top 20 players ---
+                renderLeaderboard(scores);
+            }, (error) => {
+                console.error("Error listening to leaderboard:", error);
+                document.getElementById('leaderboard-display').innerHTML = '<p class="text-red-400 text-center">Error connecting to the leaderboard.</p>';
+            });
+        }
+
+        function renderLeaderboard(scores) {
+            const leaderboardEl = document.getElementById('leaderboard-display');
+            leaderboardEl.innerHTML = '';
+            if (scores.length === 0) {
+                leaderboardEl.innerHTML = '<p class="text-center text-gray-400">Waiting for the first scores to come in...</p>';
+                return;
+            }
+            scores.forEach((score, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'leaderboard-entry grid grid-cols-12 gap-4 p-3 rounded-lg items-center';
+                const medal = ['🥇', '🥈', '🥉'][index] || `${index + 1}.`;
+                const companyHTML = score.company ? `<span class="text-sm text-violet-300 col-span-5 truncate">${score.company}</span>` : '<span class="col-span-5"></span>';
+                
+                entry.innerHTML = `
+                    <span class="text-2xl text-yellow-300 col-span-1 text-center">${medal}</span>
+                    <span class="col-span-4 truncate">${score.firstName}</span>
+                    ${companyHTML}
+                    <span class="font-bold text-yellow-300 col-span-2 text-right">${score.time.toFixed(2)}s</span>
+                `;
+                leaderboardEl.appendChild(entry);
+            });
+        }
+
+        window.onload = initializeAppAndData;
+    </script>
+</body>
+</html>
